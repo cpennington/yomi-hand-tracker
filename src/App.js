@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Badge,
-  Button,
-  Container,
-  Row,
-  Col,
-} from 'reactstrap';
+import Badge from 'reactstrap/lib/Badge';
+import Button from 'reactstrap/lib/Button';
+import Container from 'reactstrap/lib/Container';
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
 import './App.css';
 import styled from "styled-components";
 
