@@ -2,6 +2,7 @@
   "name": "yomi-hand-tracker",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://vengefulpickle.com/yomi-hand-tracker",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
@@ -38,6 +39,7 @@
     "react-dom": "^16.2.0",
     "reactstrap": "^5.0.0-beta.3",
     "style-loader": "0.19.0",
+    "styled-components": "^3.2.3",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",
     "webpack": "3.8.1",
