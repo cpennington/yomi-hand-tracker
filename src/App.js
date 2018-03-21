@@ -17,7 +17,6 @@ const UNKNOWN = 0, IN_HAND = 1, OUT_OF_HAND = 2;
 const AppContainer = styled.div.attrs({
   className: "App"
 })`
-    font-family: 'Inconsolata', monospace;
 `
 
 class App extends Component {
@@ -29,7 +28,6 @@ class App extends Component {
   render() {
     return (
       <AppContainer>
-        <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" />
         <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
         <Container>
           <Row>
