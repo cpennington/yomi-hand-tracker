@@ -25,7 +25,7 @@ class App extends Component {
       <div className="App">
         <Container>
           <Row>
-            <Col>
+            <Col className="justify-content-center">
               <HandDisplay cards={this.state.cards} cardsInHand={this.state.cardsInHand}/>
             </Col>
           </Row>
@@ -75,8 +75,10 @@ class App extends Component {
   }
 }
 
-const HandDiv = styled.div`
+const Hand = styled.div`
   font-size: 200%;
+  max-width: 7em;
+  margin: 0 auto;
 `
 
 class HandDisplay extends Component {
@@ -85,10 +87,10 @@ class HandDisplay extends Component {
       .filter(entry => entry[1] === IN_HAND)
       .map(entry => entry[0]);
     return (
-      <HandDiv>
+      <Hand>
         {inHand.map(card => <Card card={card} key={card}/>)}
-        {[...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <span key={ix}>?</span>)}
-      </HandDiv>
+        {[...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <span key={ix}>{String.fromCodePoint(0x1F0A0)}</span>)}
+      </Hand>
     );
   }}
 
