@@ -48,6 +48,10 @@ class App extends Component {
       .filter(entry => entry[1] === IN_HAND)
       .map(entry => entry[0]);
 
+    if (inHand.length > 12) {
+      return;
+    }
+
     var newState = {cards: newCards};
 
     switch (this.state.cards.get(card)) {
@@ -70,7 +74,7 @@ class App extends Component {
       .filter(entry => entry[1] === IN_HAND)
       .map(entry => entry[0]);
 
-    const newAmount = Math.max(this.state.cardsInHand + amount, inHand.length);
+    const newAmount = Math.min(Math.max(this.state.cardsInHand + amount, inHand.length), 12);
     this.setState({ cardsInHand: newAmount })
   }
 }
@@ -86,10 +90,15 @@ class HandDisplay extends Component {
     const inHand = new Array(...this.props.cards.entries())
       .filter(entry => entry[1] === IN_HAND)
       .map(entry => entry[0]);
+
+    const elements = inHand.map(card => <Card card={card} key={card} />).concat(
+      [...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <CardBack key={ix} />)
+    );
     return (
       <Hand>
-        {inHand.map(card => <Card card={card} key={card}/>)}
-        {[...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <CardBack key={ix}/>)}
+        {elements.slice(0, 6)}
+        <br/>
+        {elements.slice(6, 12)}
       </Hand>
     );
   }}
@@ -97,18 +106,29 @@ class HandDisplay extends Component {
 const CardOutline = styled.span`
   border: 2px solid grey;
   border-radius: 5px;
-  padding-left: .05rem;
+  padding: 3px;
   margin: 1px;
-  width: 1em;
-  display: inline-block;
+
+  sub.red {
+    color: red;
+  }
 `
 
 class Card extends Component {
   render() {
+    const color = {
+      "\u2660": "black",
+      "\u2665": "red",
+      "\u2666": "red",
+      "\u2663": "black",
+      "\u2726": "black",
+      "\u2727": "red",
+    }[this.props.card[1]];
+
     return (
       <CardOutline>
         <sup className="rank">{this.props.card[0]}</sup>
-        <sub className="suit">{this.props.card[1]}</sub>
+        <sub className={`suit ${color}`}>{this.props.card[1]}</sub>
       </CardOutline>
     )
   }
