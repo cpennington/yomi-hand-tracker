@@ -173,22 +173,11 @@ const CardButton = styled(Button)`
 
 class CardSelector extends Component {
   render () {
-    var color = "basic";
-    switch (this.props.inHand) {
-      case IN_HAND:
-        color = "success";
-        break;
-      case OUT_OF_HAND:
-        color = "danger";
-        break;
-      default:
-        break;
-    }
-
     return (
       <td>
         <CardButton
-          color={color}
+          outline={this.props.inHand === OUT_OF_HAND}
+          color={this.props.inHand === IN_HAND ? "success" : this.props.inHand === OUT_OF_HAND ? "danger" : "secondary"}
           onClick={() => this.props.clickCard(this.props.card)}
           size="sm"
         >
