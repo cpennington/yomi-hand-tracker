@@ -79,7 +79,6 @@ class App extends Component {
 
 const Hand = styled.div`
   font-size: 200%;
-  max-width: 7em;
   margin: 0 auto;
 `
 
