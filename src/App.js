@@ -96,9 +96,8 @@ class HandDisplay extends Component {
     );
     return (
       <Hand>
-        {elements.slice(0, 6)}
-        <br/>
-        {elements.slice(6, 12)}
+        <div>{elements.slice(0, 6)}</div>
+        <div>{elements.slice(6, 12)}</div>
       </Hand>
     );
   }}
@@ -106,8 +105,8 @@ class HandDisplay extends Component {
 const CardOutline = styled.span`
   border: 2px solid grey;
   border-radius: 5px;
-  padding: 3px;
-  margin: 1px;
+  padding: 0.2rem;
+  margin: 0.1rem;
 
   sub.red {
     color: red;
