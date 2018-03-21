@@ -4,6 +4,8 @@ import Button from 'reactstrap/lib/Button';
 import Container from 'reactstrap/lib/Container';
 import Row from 'reactstrap/lib/Row';
 import Col from 'reactstrap/lib/Col';
+import Navbar from 'reactstrap/lib/Navbar';
+import NavbarBrand from 'reactstrap/lib/NavbarBrand';
 import './App.css';
 import styled from "styled-components";
 
@@ -21,6 +23,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
         <Container>
           <Row>
             <Col className="justify-content-center">
