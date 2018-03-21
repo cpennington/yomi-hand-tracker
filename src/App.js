@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"];
 const suits = ["\u2660", "\u2665", "\u2666", "\u2663"];
-const cards = ['!B', '!R'].concat(...ranks.map(rank => suits.map(suit => rank + suit)));
+const cards = ['!\u2726', '!\u2727'].concat(...ranks.map(rank => suits.map(suit => rank + suit)));
 const UNKNOWN = 0, IN_HAND = 1, OUT_OF_HAND = 2;
 
 class App extends Component {
@@ -89,15 +89,35 @@ class HandDisplay extends Component {
     return (
       <Hand>
         {inHand.map(card => <Card card={card} key={card}/>)}
-        {[...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <span key={ix}>{String.fromCodePoint(0x1F0A0)}</span>)}
+        {[...Array(Math.max(this.props.cardsInHand - inHand.length, 0)).keys()].map(ix => <CardBack key={ix}/>)}
       </Hand>
     );
   }}
 
+const CardOutline = styled.span`
+  border: 2px solid grey;
+  border-radius: 5px;
+  padding-left: .05rem;
+  margin: 1px;
+  width: 1em;
+  display: inline-block;
+`
+
 class Card extends Component {
   render() {
     return (
-      <span>{unicodeCard(this.props.card)}</span>
+      <CardOutline>
+        <sup className="rank">{this.props.card[0]}</sup>
+        <sub className="suit">{this.props.card[1]}</sub>
+      </CardOutline>
+    )
+  }
+}
+
+class CardBack extends Component {
+  render() {
+    return (
+      <CardOutline>{String.fromCodePoint(0x1F7CD)}</CardOutline>
     )
   }
 }
@@ -106,14 +126,12 @@ const SelectorTable = styled.table.attrs({
   align: "center"
 })`
   border-collapse: collapse;
-`
-
-const SelectorTr = styled.tr`
-  padding: 0;
-`
-
-const SelectorTh = styled.th`
-  padding-right: 0.5em;
+  tr {
+    padding: 0;
+  }
+  th {
+    padding-right: 0.5em;
+  }
 `
 
 class HandSelector extends Component {
@@ -124,8 +142,8 @@ class HandSelector extends Component {
         <SelectorTable>
           <tbody>
             {ranks.map(rank =>
-              <SelectorTr key={rank}>
-                <SelectorTh>{rank}</SelectorTh>
+              <tr key={rank}>
+                <th>{rank}</th>
                 {suits.map(suit =>
                   <CardSelector
                     key={rank+suit}
@@ -135,19 +153,23 @@ class HandSelector extends Component {
                     inHand={this.props.cards.get(rank+suit)}
                   />
                 )}
-              </SelectorTr>
+              </tr>
             )}
-            <SelectorTr>
-              <SelectorTh>!</SelectorTh>
-              <CardSelector card="!B" suit="B" clickCard={this.props.clickCard} inHand={this.props.cards.get("!B")} />
-              <CardSelector card="!R" suit="R" clickCard={this.props.clickCard} inHand={this.props.cards.get("!R")} />
-            </SelectorTr>
+            <tr>
+              <th>!</th>
+              <CardSelector card={"!\u2727"} suit={"\u2727"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2727")} />
+              <CardSelector card={"!\u2726"} suit={"\u2726"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2726")} />
+            </tr>
           </tbody>
         </SelectorTable>
       </div>
     );
   }
 }
+
+const CardButton = styled(Button)`
+  width: 2em;
+`
 
 class CardSelector extends Component {
   render () {
@@ -165,13 +187,13 @@ class CardSelector extends Component {
 
     return (
       <td>
-        <Button
+        <CardButton
           color={color}
           onClick={() => this.props.clickCard(this.props.card)}
           size="sm"
         >
           {this.props.suit}
-        </Button>
+        </CardButton>
       </td>
     )
   }
