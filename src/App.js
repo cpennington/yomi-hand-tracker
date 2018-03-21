@@ -14,6 +14,12 @@ const suits = ["\u2660", "\u2665", "\u2666", "\u2663"];
 const cards = ['!\u2726', '!\u2727'].concat(...ranks.map(rank => suits.map(suit => rank + suit)));
 const UNKNOWN = 0, IN_HAND = 1, OUT_OF_HAND = 2;
 
+const AppContainer = styled.div.attrs({
+  className: "App"
+})`
+    font-family: 'Inconsolata', monospace;
+`
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +28,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <AppContainer>
+        <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" />
         <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
         <Container>
           <Row>
@@ -37,7 +44,7 @@ class App extends Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </AppContainer>
     );
   }
 
