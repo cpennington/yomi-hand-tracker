@@ -212,27 +212,4 @@ class HandSizeSelector extends Component {
   }
 }
 
-function unicodeCard(card) {
-  const rank = card[0],
-        suit = card[1];
-
-  if (rank === "!") {
-    if (suit === "B") {
-      return String.fromCodePoint(0x1F0CF);
-    } else {
-      return String.fromCodePoint(0x1F0DF);
-    }
-  } else {
-    const suitBase = {
-        "\u2660": 0x1F0A1,
-        "\u2665": 0x1F0B1,
-        "\u2666": 0x1F0C1,
-        "\u2663": 0x1F0D1,
-      }[suit],
-      rankOffset = ranks.indexOf(rank);
-
-    return String.fromCodePoint(suitBase + rankOffset);
-  }
-}
-
 export default App;
