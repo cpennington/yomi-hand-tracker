@@ -19,7 +19,6 @@ const AppContainer = styled.div.attrs({
 `
 
 const HandTracker = styled(Container)`
-  max-width: 300px;
 `
 
 class App extends Component {
