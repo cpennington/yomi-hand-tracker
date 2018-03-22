@@ -30,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <AppContainer>
-        <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
+        <Navbar><NavbarBrand className="mx-auto">Yomi Hand Tracker</NavbarBrand></Navbar>
         <HandTracker className="d-flex h-100">
           <Row className="align-items-center">
             <Col xs="12" lg="auto">
