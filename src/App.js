@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Badge from 'reactstrap/lib/Badge';
 import Button from 'reactstrap/lib/Button';
 import Container from 'reactstrap/lib/Container';
 import Row from 'reactstrap/lib/Row';
@@ -19,6 +18,10 @@ const AppContainer = styled.div.attrs({
 })`
 `
 
+const HandTracker = styled(Container)`
+  max-width: 300px;
+`
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -29,19 +32,19 @@ class App extends Component {
     return (
       <AppContainer>
         <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
-        <Container>
+        <HandTracker>
           <Row>
-            <Col className="justify-content-center">
+            <Col xs="12" lg="3">
               <HandDisplay cards={this.state.cards} cardsInHand={this.state.cardsInHand}/>
             </Col>
-          </Row>
-          <Row>
-            <Col>
+            <Col xs="12" lg="6">
               <HandSelector cards={this.state.cards} cardsInHand={this.state.cardsInHand} clickCard={card => this.clickCard(card)}/>
+            </Col>
+            <Col xs="12" lg="auto">
               <HandSizeSelector cardsInHand={this.state.cardsInHand} add={amount => this.addCardsInHand(amount)}/>
             </Col>
           </Row>
-        </Container>
+        </HandTracker>
       </AppContainer>
     );
   }
@@ -85,9 +88,14 @@ class App extends Component {
   }
 }
 
-const Hand = styled.div`
+const Hand = styled.div.attrs({
+  className: "bg-light"
+})`
   font-size: 200%;
   margin: 0 auto;
+  height: 3em;
+  width: 8em;
+  border-radius: 5px;
 `
 
 class HandDisplay extends Component {
@@ -112,6 +120,7 @@ const CardOutline = styled.span`
   border-radius: 5px;
   padding: 0.2rem;
   margin: 0.1rem;
+  background: white;
 
   sub.red {
     color: red;
@@ -154,7 +163,9 @@ const SelectorTable = styled.table.attrs({
     padding: 0;
   }
   th {
-    padding-right: 0.5em;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
   }
 `
 
@@ -163,7 +174,7 @@ class HandSelector extends Component {
     return (
       <div>
         <div>Known Cards</div>
-        <SelectorTable>
+        <SelectorTable className="d-xs-inline d-lg-none">
           <tbody>
             {ranks.map(rank =>
               <tr key={rank}>
@@ -184,6 +195,33 @@ class HandSelector extends Component {
               <CardSelector card={"!\u2727"} suit={"\u2727"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2727")} />
               <CardSelector card={"!\u2726"} suit={"\u2726"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2726")} />
             </tr>
+          </tbody>
+        </SelectorTable>
+        <SelectorTable className="d-none d-lg-inline">
+          <thead>
+            <tr>
+              {ranks.map(rank =>
+                <th>{rank}</th>
+              )}
+              <th>!</th>
+            </tr>
+          </thead>
+          <tbody>
+            {suits.map(suit =>
+              <tr key={suit}>
+                {ranks.map(rank =>
+                  <CardSelector
+                    key={rank + suit}
+                    card={rank + suit}
+                    suit={suit}
+                    clickCard={this.props.clickCard}
+                    inHand={this.props.cards.get(rank + suit)}
+                  />
+                )}
+                {suit === "\u2660" ? <CardSelector card={"!\u2727"} suit={"\u2727"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2727")} /> : null}
+                {suit === "\u2665" ? <CardSelector card={"!\u2726"} suit={"\u2726"} clickCard={this.props.clickCard} inHand={this.props.cards.get("!\u2726")} /> : null}
+              </tr>
+            )}
           </tbody>
         </SelectorTable>
       </div>
@@ -212,15 +250,28 @@ class CardSelector extends Component {
   }
 }
 
+const HandSizeContainer = styled.div`
+  .size {
+    width: 2em;
+    margin-left: .5em;
+    margin-right: .5em;
+    display: inline-block;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+  }
+`
+
 class HandSizeSelector extends Component {
   render () {
     return (
-      <div>
+      <HandSizeContainer>
         <div>Hand Size</div>
         <Button size="sm" onClick={() => this.props.add(-1)}>-</Button>
-        <Badge color="info" pill>{this.props.cardsInHand}</Badge>
+        <span className='bg-warning size'>{this.props.cardsInHand}</span>
         <Button size="sm" onClick={() => this.props.add(1)}>+</Button>
-      </div>
+      </HandSizeContainer>
     )
   }
 }
