@@ -31,12 +31,12 @@ class App extends Component {
     return (
       <AppContainer>
         <Navbar><NavbarBrand>Yomi Hand Tracker</NavbarBrand></Navbar>
-        <HandTracker>
-          <Row>
-            <Col xs="12" lg="3">
+        <HandTracker className="d-flex h-100">
+          <Row className="align-items-center">
+            <Col xs="12" lg="auto">
               <HandDisplay cards={this.state.cards} cardsInHand={this.state.cardsInHand}/>
             </Col>
-            <Col xs="12" lg="6">
+            <Col xs="12" lg="auto">
               <HandSelector cards={this.state.cards} cardsInHand={this.state.cardsInHand} clickCard={card => this.clickCard(card)}/>
             </Col>
             <Col xs="12" lg="auto">
@@ -88,13 +88,17 @@ class App extends Component {
 }
 
 const Hand = styled.div.attrs({
-  className: "bg-light"
+  align: "center"
 })`
-  font-size: 200%;
+  .handrow {
+    font-size: 200%;
+    width: 8em;
+    height: 1.5em;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
   margin: 0 auto;
-  height: 3em;
-  width: 8em;
-  border-radius: 5px;
 `
 
 class HandDisplay extends Component {
@@ -108,8 +112,9 @@ class HandDisplay extends Component {
     );
     return (
       <Hand>
-        <div>{elements.slice(0, 6)}</div>
-        <div>{elements.slice(6, 12)}</div>
+        <div>Current Hand</div>
+        <div className='handrow bg-secondary'>{elements.slice(0, 6)}</div>
+        <div className='handrow bg-secondary'>{elements.slice(6, 12)}</div>
       </Hand>
     );
   }}
