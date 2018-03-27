@@ -31,16 +31,21 @@ class App extends Component {
     return (
       <AppContainer>
         <Navbar><NavbarBrand className="mx-auto">Yomi Hand Tracker</NavbarBrand></Navbar>
-        <HandTracker className="d-flex h-100">
+        <HandTracker>
           <Row className="align-items-center">
-            <Col xs="12" lg="auto">
+            <Col xs="12" lg="4">
               <HandDisplay cards={this.state.cards} cardsInHand={this.state.cardsInHand}/>
             </Col>
             <Col xs="12" lg="auto">
-              <HandSelector cards={this.state.cards} cardsInHand={this.state.cardsInHand} clickCard={card => this.clickCard(card)}/>
+              <HandSelector cards={this.state.cards} cardsInHand={this.state.cardsInHand} clickCard={(event, card) => this.clickCard(event, card)}/>
             </Col>
-            <Col xs="12" lg="auto">
+            <Col xs="12" lg="2">
               <HandSizeSelector cardsInHand={this.state.cardsInHand} add={amount => this.addCardsInHand(amount)}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              Click to mark a card as in-hand, Ctrl-click to mark a card as not-in-hand.
             </Col>
           </Row>
         </HandTracker>
@@ -48,30 +53,29 @@ class App extends Component {
     );
   }
 
-  clickCard(card) {
+  clickCard(event, card) {
     var newCards = new Map(this.state.cards);
-    newCards.set(card, (newCards.get(card) + 1) % 3);
 
-    const inHand = new Array(...newCards.entries())
-      .filter(entry => entry[1] === IN_HAND)
-      .map(entry => entry[0]);
-
-    if (inHand.length > 12) {
-      return;
+    const oldCardState = this.state.cards.get(card);
+    if (event.type === 'click') {
+      if (event.ctrlKey) {
+        newCards.set(card, OUT_OF_HAND);
+      } else {
+        newCards.set(card, IN_HAND);
+      }
     }
 
-    var newState = {cards: newCards};
+    const newCardState = newCards.get(card);
+    var newState = { cards: newCards, cardsInHand: this.state.cardsInHand };
 
-    switch (this.state.cards.get(card)) {
-      case IN_HAND:
-        newState.cardsInHand = this.state.cardsInHand - 1;
-        break;
-      case UNKNOWN:
-        if (inHand.length > this.state.cardsInHand) {
-          newState.cardsInHand = inHand.length;
-        }
-        break;
-      default:
+    if (oldCardState !== IN_HAND && newCardState === IN_HAND) {
+      newState.cardsInHand++;
+    } else if (oldCardState !== OUT_OF_HAND && newCardState === OUT_OF_HAND) {
+      newState.cardsInHand--;
+    }
+
+    if (newState.cardsInHand > 12) {
+      return;
     }
 
     this.setState(newState)
@@ -244,7 +248,7 @@ class CardSelector extends Component {
         <CardButton
           outline={this.props.inHand === OUT_OF_HAND}
           color={this.props.inHand === IN_HAND ? "success" : this.props.inHand === OUT_OF_HAND ? "danger" : "secondary"}
-          onClick={() => this.props.clickCard(this.props.card)}
+          onClick={(event) => this.props.clickCard(event, this.props.card)}
           size="sm"
         >
           {this.props.suit}
